@@ -77,7 +77,7 @@ export default function CheckoutPage() {
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, subtotal: total, discount, coupon: appliedCoupon, total: finalTotal, ...form }),
+        body: JSON.stringify({ items, subtotal: total, total, ...form }),
       })
 
       if (!response.ok) {
@@ -211,9 +211,21 @@ export default function CheckoutPage() {
               )}
 
               {appliedCoupon && (
-                <p className="coupon-success">
-                  Cupom aplicado: {appliedCoupon}
-                </p>
+                <div className="coupon-success">
+                  <span>Cupom aplicado: {appliedCoupon}</span>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAppliedCoupon('')
+                      setCoupon('')
+                      setCouponError('')
+
+                    }}
+                  >
+                    Remover
+                  </button>
+                </div>
               )}
             </div>
 
