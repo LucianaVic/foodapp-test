@@ -13,6 +13,6 @@
 - Validar melhor os campos do checkout, como nome e endereço obrigatórios.
 
 
-### Melhoria aplicada
+## Melhoria aplicada
 
 - Escolhi implementar a opção de remover o cupom aplicado porque, depois que o usuário aplica um desconto, ele pode querer trocar por outro cupom ou desistir de usar aquele. Sem essa opção, ele teria que recarregar a página ou alterar manualmente o campo, o que prejudica a experiência. Além disso, é uma melhoria pequena, mas importante para o fluxo de checkout, porque dá mais controle ao usuário antes de finalizar o pedido.
