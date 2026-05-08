@@ -15,8 +15,11 @@ interface CheckoutForm {
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, total } = useCart()
+  const { items, total, clearCart } = useCart()
   const [loading, setLoading] = useState(false)
+  const [coupon, setCoupon] = useState('')
+  const [appliedCoupon, setAppliedCoupon] = useState('')
+  const [couponError, setCouponError] = useState('')
   const [error, setError] = useState<string | null>(null)
 
   const [form, setForm] = useState<CheckoutForm>({
@@ -24,6 +27,29 @@ export default function CheckoutPage() {
     address: '',
     paymentMethod: 'pix',
   })
+  const discount = appliedCoupon === 'BEMVINDO10'
+    ? total * 0.1
+    : appliedCoupon === 'FRETE20'
+      ? 2000
+      : 0
+
+  const finalTotal = Math.max(total - discount, 0)
+
+  const handleApplyCoupon = () => {
+    const normalizedCoupon = coupon.trim().toUpperCase()
+
+    if (
+      normalizedCoupon !== 'BEMVINDO10' &&
+      normalizedCoupon !== 'FRETE20'
+    ) {
+      setCouponError('Cupom inválido')
+      setAppliedCoupon('')
+      return
+    }
+
+    setAppliedCoupon(normalizedCoupon)
+    setCouponError('')
+  } 
 
   if (items.length === 0) {
     return (
@@ -51,7 +77,7 @@ export default function CheckoutPage() {
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, subtotal: total, total, ...form }),
+        body: JSON.stringify({ items, subtotal: total, discount, coupon: appliedCoupon, total: finalTotal, ...form }),
       })
 
       if (!response.ok) {
@@ -60,6 +86,7 @@ export default function CheckoutPage() {
       }
 
       const order = await response.json()
+      clearCart()
       router.push(`/order-success?id=${order.id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro inesperado')
@@ -157,16 +184,51 @@ export default function CheckoutPage() {
               <span>Subtotal</span>
               <span>{formatCurrency(total)}</span>
             </div>
+
             <div className="cart-summary-row">
               <span>Entrega</span>
               <span>Grátis</span>
             </div>
 
+            <div className="coupon-box">
+              <label>Cupom de desconto</label>
+
+              <div className="coupon-input-row">
+                <input
+                  type="text"
+                  value={coupon}
+                  onChange={(e) => setCoupon(e.target.value)}
+                  placeholder="Digite seu cupom"
+                />
+
+                <button type="button" onClick={handleApplyCoupon}>
+                  Aplicar
+                </button>
+              </div>
+
+              {couponError && (
+                <p className="coupon-error">{couponError}</p>
+              )}
+
+              {appliedCoupon && (
+                <p className="coupon-success">
+                  Cupom aplicado: {appliedCoupon}
+                </p>
+              )}
+            </div>
+
+            {discount > 0 && (
+              <div className="cart-summary-row">
+                <span>Desconto</span>
+                <span>- {formatCurrency(discount)}</span>
+              </div>
+            )}
+
             <hr className="summary-divider" />
 
             <div className="summary-total-row">
               <span>Total</span>
-              <span>{formatCurrency(total)}</span>
+              <span>{formatCurrency(finalTotal)}</span>
             </div>
 
             <button type="submit" className="btn-primary" disabled={loading}>
