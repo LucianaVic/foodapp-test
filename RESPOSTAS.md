@@ -8,7 +8,6 @@
 - Não há testes automatizados.
 - Não tem um botão para remover o cupom de desconto.
 - Melhorar acessibilidade dos botões, inputs e mensagens de erro.
-- Impedir finalização de pedido com carrinho vazio.
 - Validar melhor os campos do checkout, como nome e endereço obrigatórios.
 
 
