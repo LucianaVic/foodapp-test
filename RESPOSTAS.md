@@ -14,3 +14,12 @@ O carrinho não era limpo após finalizar pedido, corrigi usando clearCart() ap�
 ##Adicionei sistema de cupons:
 - BEMVINDO10: 10% de desconto no total
 - FRETE20: R$ 20,00 de desconto fixo
+
+## Melhorias
+
+- A API aceita o total vindo do frontend sem recalcular no backend.
+- Não há persistência dos pedidos, eles somem ao reiniciar o servidor.
+- O checkout não mostra uma tela de revisão antes de enviar.
+- Não há testes automatizados.
+- O campo de cupom poderia ter botão para remover cupom aplicado.
+
