@@ -6,7 +6,6 @@
 - Não há persistência dos pedidos, eles somem ao reiniciar o servidor.
 - O checkout não mostra uma tela de revisão antes de enviar.
 - Não há testes automatizados.
-- O campo de cupom poderia ter botão para remover cupom aplicado.
 - Não tem um botão para remover o cupom de desconto.
 - Melhorar acessibilidade dos botões, inputs e mensagens de erro.
 - Impedir finalização de pedido com carrinho vazio.
